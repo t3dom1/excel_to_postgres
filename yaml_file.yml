@@ -1,0 +1,46 @@
+conn_type:
+  type: "hybrid"
+  param:
+    url: "https://api.github.com/repos/t3dom1/Excel_Auto_Updater/contents/Book.xlsx"
+    local_file: "Book.xlsx"
+    host: "postgres"
+    port: 5432
+    database: "spark_db"
+    user: "spark_user"
+    password: "spark_pass"
+
+tables:
+  data: "excel_data"
+  log: "etl_log"
+
+parse:
+  rows: [7, 11, 15, 19, 23]
+
+output:
+  enabled: true
+  format: "csv"  
+  path: "output_data.csv"
+  csv_delimiter: ","
+  csv_encoding: "utf-8-sig"
+  json_orient: "records"
+  json_force_ascii: false
+
+logging:
+  level: "INFO"
+  format: "[%(asctime)s] %(levelname)s: %(message)s"
+
+columns: ["fio", "summa", "chel", "sheet_name"]
+
+transform: 
+    dfselector: 
+        columns: ["fio", "summa", "chel", "sheet_name"]
+    dfrename: 
+        coolname:
+            - oldname: "fio"
+              newname: "ФИО"
+            - oldname: "summa"
+              newname: "Сумма"
+            - oldname: "chel"
+              newname: "Чел"
+            - oldname: "sheet_name"
+              newname: "Название_листа"
