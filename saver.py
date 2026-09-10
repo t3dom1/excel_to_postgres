@@ -28,4 +28,3 @@ def save_output(df, output_config):
     
     else:
         print(f"Unknown output type: {output_type}")
-        
